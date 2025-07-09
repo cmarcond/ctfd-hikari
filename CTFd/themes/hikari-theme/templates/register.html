@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container login-container">
+    <div class="box">
+      <div class="imgbox">
+        <div class="imgsub">
+        </div>
+        <img src="/themes/core-beta/static/img/login-wall.png" alt="" class="jimg">
+      </div>
+      </div>
+
+    <div class="box login-box">
+
+        <div>
+          <h2>Crie uma conta</h2>
+          <p>Já tem uma conta? <a href="{{url_for('auth.login')}}">Faça o login</a></p>
+        </div>
+
+        {% with form = Forms.auth.RegistrationForm() %}
+
+          {% from "macros/forms.html" import render_extra_fields %}
+
+          <form method="post" accept-charset="utf-8" role="form">
+
+            <div class="jform-control mb-3">
+              {{ form.name(class="", value=name, autocomplete="username", placeholder="Nome de Usuário") }}
+            </div>
+
+            <div class="jform-control mb-3">
+              {{ form.email(class="", value=email, autocomplete="email", placeholder="E-mail") }}
+            </div>
+
+            <div class="jform-control mb-3">
+              {{ form.password(class="", value=password, autocomplete="new-password", placeholder="Senha") }}
+            </div>
+
+            {{ form.nonce() }}
+
+            {{ render_extra_fields(form.extra) }}
+
+            <div class="">
+                {{ form.submit(class="jbtn") }}
+            </div>
+
+            {% if Configs.tos_or_privacy %}
+              <div class="row pt-3">
+                <div class="col-md-12 text-center">
+                  <small class="text-muted text-center">
+                    {% trans trimmed privacy_link=Configs.privacy_link, tos_link=Configs.tos_link %}
+                    By registering, you agree to the
+                    <a href="{{ privacy_link }}" target="_blank">privacy policy</a>
+                    and <a href="{{ tos_link }}" target="_blank">terms of service</a>
+                    {% endtrans %}
+                  </small>
+                </div>
+              </div>
+            {% endif %}
+          </form>
+        {% endwith %}
+        
+        <br>
+        <div class="separator">Entre com</div>
+
+        <div>
+          <button class="jbtn-secondary"><i class="fa-brands fa-google"></i></button>
+          <button class="jbtn-secondary"><i class="fa-brands fa-apple"></i></button>
+        </div>
+
+        <br><br>
+        {% include "components/errors.html" %}
+
+      </div>
+  </div>
+{% endblock %}

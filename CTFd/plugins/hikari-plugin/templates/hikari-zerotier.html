@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="jumbotron">
+    <div class="container">
+      <h1>
+        {% trans %}Gerenciamento de competição HIKARI - Setup de zerotiers{% endtrans %}
+      </h1>
+    </div>
+</div>
+<div class="container mt-3">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+  <h1>Informações de times e zerotiers cadastrados</h1>
+  <table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nome do time</th>
+            <th scope="col">Network ID do zerotier</th>
+            <th scope="col">Nome do zerotier</th>
+            <th scope="col">Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for info in infos %}
+        <tr>
+            <th scope="row">{{ loop.index }}</th>
+            <td class="align-middle">{{ info[0].name }}</td>
+            <td class="align-middle">{{ info[1].network_id }}</td>
+            <td class="align-middle">{{ info[1].name }}</td>
+            <td class="align-middle">
+                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton{{ info[0].id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                    Link
+                </button>
+                <button class="btn btn-danger" onclick="deleteAssociation('{{ info[0].id }}')">Unlink</button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ info[0].id }}">
+                    {% for zt in zerotiers %}
+                    <li><a class="dropdown-item" href="#" onclick="associateZerotier('{{ info[0].id }}', '{{ zt.network_id }}')">{{ zt.name }}</a></li>
+                    {% endfor %}
+
+                    {% if not zerotiers %}
+                    <li><a class="dropdown-item" href="#">No Zerotiers Available</a></li>
+                    {% endif %}
+                </ul>
+                <form id="associateForm{{ info[0].id }}" action="{{ url_for('hikariplugin.set_zerotier_config') }}" method="post" style="display:none;">
+                    {{ form.nonce() }}
+                    <input type="hidden" name="team_id" value="{{ info[0].id }}">
+                    <input type="hidden" name="network_id" id="networkIdInput{{ info[0].id }}">
+                </form>
+                <form id="deleteAssocForm{{ info[0].id }}" action="{{ url_for('hikariplugin.delete_zerotier_assoc') }}" method="post" style="display:none;">
+                    {{ form.nonce() }}
+                    <input type="hidden" name="team_id" value="{{ info[0].id }}">
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+<div class="container mt-5">
+    <h2>Lista de zerotiers</h2>
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Network ID</th>
+                <th scope="col">-</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for zt in zerotiers %}
+            <tr>
+                <th scope="row">{{ loop.index }}</th>
+                <td>{{ zt.name }}</td>
+                <td>{{ zt.network_id }}</td>
+                <!-- <td>{{ zt.team.name if config.team else 'Not Assigned' }}</td> -->
+                <td><button class="btn btn-danger" onclick="delete_zerotier('{{zt.network_id}}')">Delete</button>
+                    <form id="deleteZerotierForm{{ zt.network_id }}" action="{{url_for('hikariplugin.delete_zerotier')}}" method="POST" style="display:none;">
+                        {{ form.nonce() }}
+                        <input type="hidden" name="network_id" value="{{zt.network_id}}">
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" class="text-center">Nenhuma configuração de zerotier ainda</td>
+            </tr>
+            {% endfor %}
+
+            <tr>
+                <td colspan="5" class="text-right">
+                    <a href="{{ url_for('hikariplugin.create_zerotier') }}" class="btn btn-success" style="display:inline-block;">Cadastrar Zerotier</a>
+                    <form action="{{url_for('hikariplugin.hikari_delete_all_zerotiers')}}" method="POST" style="display: inline-block;">
+                        {{ form.nonce() }}
+                        <input class="btn btn-danger" type="submit" value="Apagar tudo">
+                    </form>
+                </td>
+                
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="container mt-5">
+    <h2>Ações Críticas</h2>
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Ação</th>
+                <th scope="col">Explicação</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>1</th>
+                <td>
+                    <form action="{{ url_for('hikariplugin.hikari_zerotier_random_assign')}}" method="POST">
+                        {{ form.nonce() }}
+                        <input type="submit" class="btn btn-success" value="Atribuição Aleatória">
+                    </form>
+                </td>
+                <td>Atribui aleatoriamente um zerotier para cada time.</td>
+            </tr>
+
+            <tr>
+                <th>2</th>
+                <td>
+                    <form action="{{ url_for('hikariplugin.hikari_unlink_all_zerotiers')}}" method="POST">
+                        {{ form.nonce() }}
+                        <input type="submit" class="btn btn-success" value="Desatribuir Zerotierss">
+                    </form>
+                </td>
+                <td>Desfaz a atribuição de zerotiers a todos os times</td>
+            </tr>
+
+            <tr>
+                <th>3</th>
+                <td>
+                    <form action="{{ url_for('hikariplugin.hikari_notify_all')}}" method="POST">
+                        {{ form.nonce() }}
+                        <input type="submit" class="btn btn-success" value="Notificar Todos os Times">
+                    </form>
+                </td>
+                <td>Notifica todos os times que tiveram sua configuração de zerotier alterada.</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="row pt-3">
+        <div class="col">
+            <a href="{{ url_for('hikariplugin.hikari_main') }}" class="btn btn-secondary">Voltar</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .table th, .table td {
+    text-align: center; /* or 'center', 'right' based on your preference */
+    vertical-align: middle; /* ensures content is centered vertically */
+}
+
+</style>
+
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  function associateZerotier(teamId, networkId) {
+      const form = document.getElementById('associateForm' + teamId);
+      const networkInput = document.getElementById('networkIdInput' + teamId);
+      networkInput.value = networkId;
+      form.submit();
+  }
+
+  function deleteAssociation(teamId){
+      const form = document.getElementById('deleteAssocForm' + teamId);
+      form.submit();
+  } 
+
+  function delete_zerotier(network_id){
+      const form = document.getElementById('deleteZerotierForm' + network_id);
+      form.submit();
+  } 
+
+</script>
+  {{ Assets.js("assets/js/page.js") }}
+{% endblock %}

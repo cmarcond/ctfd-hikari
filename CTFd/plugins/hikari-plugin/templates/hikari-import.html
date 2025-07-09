@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+<div class="jumbotron">
+    <div class="container">
+      <h1>
+        {% trans %}Gerenciamento de competição HIKARI - Importar instância{% endtrans %}
+      </h1>
+    </div>
+</div>
+
+
+<div class="container">
+        <h1>Importar Instância</h1>
+        
+        <!-- Flask-Bootstrap Form Rendering -->
+        <form enctype="multipart/form-data" method="POST">
+            <!-- CSRF Token for security -->
+
+            <!-- Challenge Selection Field -->
+            <p>Faça o upload do arquivo zip de uma instância HIKARI previamente salva.</p>
+            {{ form.file_import(class="form-control") }}
+
+            {{ form.nonce() }}
+            <!-- Submit Button -->
+            <br>
+            {{ form.submit(class="btn btn-primary") }}
+        </form>
+    </div>
+
+{% endblock %}
+
+

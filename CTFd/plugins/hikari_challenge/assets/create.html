@@ -1,0 +1,50 @@
+{% extends "admin/challenges/create.html" %}
+{% block header %}
+<div class="alert alert-secondary" role="alert">
+	Hikari Challenge here
+</div>
+{% endblock %}
+
+
+{% block value %}
+    <div class="form-group">
+        <label>
+            Json Logs File
+            <br>
+            <small class="form-text text-muted">
+                Upload the json file containing the logs to be injected.
+            </small>
+        </label>
+        <input type="file" class="form-control-file" id="jsonFile" name="json_file" required>
+    </div>
+
+    <input type="text" class="form-control-file" id="fileContent" name="chall_logs" required hidden>
+    <input type="text" class="form-control-file" id="fileName" name="logs_filename" required hidden>
+    
+
+    <script>
+        document.getElementById('jsonFile').addEventListener('change', function() {
+            const file = this.files[0];
+        
+            if (file && file.type === "application/json") {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const fileContent = event.target.result;
+                    document.getElementById('fileContent').value = fileContent;
+                };
+                console.log(file);
+                reader.readAsText(file);
+                document.getElementById('fileName').value = file.name;
+            } else {
+                alert('Please select a valid JSON file.');
+            }
+        });
+        </script>
+
+{% endblock %}
+
+
+
+{% block type %}
+	<input type="hidden" value="hikari" name="type" id="chaltype">
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container login-container">
+    <div class="box">
+      <div class="imgbox">
+        <div class="imgsub">
+        </div>
+        <img src="/themes/core-beta/static/img/login-wall.png" alt="" class="jimg">
+      </div>
+      </div>
+
+    <div class="box login-box">
+      <div>
+        <h2>Entrar no Hikari</h2>
+        <p>Ainda não tem uma conta? <a href="{{url_for('auth.register')}}">Crie uma aqui</a></p>
+      </div>
+
+      {% with form = Forms.auth.LoginForm() %}
+          <form method="post" accept-charset="utf-8">
+            <div class="jform-control mb-3">
+              {{ form.name(class="", value=name, autocomplete="username email", placeholder="Nome de usuário ou e-mail") }}
+            </div>
+        
+
+            <div class="jform-control mb-3">
+              {{ form.password(class="", value=password, autocomplete="current-password", placeholder="Senha") }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.submit(class="jbtn", value="Acessar HIKARI") }}
+            </div>
+
+            {{ form.nonce() }}
+          </form>
+        {% endwith %}
+
+
+        <div class="separator">Entre com</div>
+
+        <div>
+          <button class="jbtn-secondary"><i class="fa-brands fa-google"></i></button>
+          <button class="jbtn-secondary"><i class="fa-brands fa-apple"></i></button>
+        </div>
+        <br><br>
+        {% include "components/errors.html" %}
+
+    </div>
+  </div>
+  <script>
+
+  </script>
+{% endblock %}
+
+    <!-- <div class="row">
+      <div class="col-md-8 col offset-md-2 col-lg-6 offset-lg-3">
+        {% include "components/errors.html" %}
+
+        {% if integrations.mlc() %}
+          <a class="btn btn-secondary btn-lg btn-block w-100" href="{{ url_for('auth.oauth_login') }}">
+            Login with Major League Cyber
+          </a>
+
+          <hr>
+        {% endif %}
+
+        {% with form = Forms.auth.LoginForm() %}
+          <form method="post" accept-charset="utf-8">
+            <div class="mb-3">
+              <b>{{ form.name.label(class="form-label") }}</b>
+              {{ form.name(class="form-control", value=name, autocomplete="username email") }}
+            </div>
+
+            <div class="mb-3">
+              <b>{{ form.password.label(class="form-label") }}</b>
+              {{ form.password(class="form-control", value=password, autocomplete="current-password") }}
+            </div>
+
+            <div class="row pt-3">
+              <div class="col-6 col-md-8">
+                <a class="align-middle" href="{{ url_for('auth.reset_password') }}">
+                  {% trans %}Forgot your password?{% endtrans %}
+                </a>
+              </div>
+
+              <div class="col-6 col-md-4">
+                {{ form.submit(class="btn btn-block btn-primary w-100") }}
+              </div>
+            </div>
+
+            {{ form.nonce() }}
+          </form>
+        {% endwith %}
+      </div>
+    </div> -->
+
+

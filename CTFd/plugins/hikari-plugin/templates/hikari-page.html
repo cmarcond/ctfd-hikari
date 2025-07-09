@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block stylesheets %}
+{{super()}}
+<link rel="stylesheet" href="/plugins/hikari-plugin/assets/main.css">
+{% endblock %}
+
+
+{% block content %}
+<div class="jumbotron">
+    <div class="container">
+      <h1>
+        {% trans %}Gerenciamento de competição - HIKARI{% endtrans %}
+      </h1>
+    </div>
+</div>
+
+<div class="container" id="main-content">
+    <div id="rapid-menu">
+        <h3>Menu</h3>
+        <ul class="list-group">
+            <li class="list-group-item"><a href="{{ url_for('hikariplugin.hikari_import_ctf') }}">Importar instância do CTFd HIKARI</a></li>
+            <li class="list-group-item"><a href="{{ url_for('admin.export_ctf') }}">Exportar competição atual</a></li>
+            <li class="list-group-item"><a href="{{ url_for('hikariplugin.hikari_notify') }}">Enviar e-mail aos competidores</a></li>
+            <li class="list-group-item"><a href="{{ url_for('hikariplugin.hikari_zerotier_setup') }}">Configuração de zerotiers</a></li>
+        </ul>
+    </div>
+    <div id="status-section">
+        <h3>Status</h3>
+
+        <div id="status-items">
+            <div class="d-flex justify-content-between align-items-center mb-3 status-item-entry">
+                <div class="item-text">
+                    <span>Status dos zerotiers</span>
+                </div>
+                <div class="item-status {{stats['zerotier']['class']}}">
+                    <span class="">{{stats['zerotier']['status']}}</span>
+                </div>
+            </div>
+            {% if stats['zerotier']['status'] == 'error' %}
+                <p class="alert alert-danger">{{stats['zerotier']['message']}}</p>
+            {% endif %}
+
+            {% if stats['zerotier']['status'] == 'warning' %}
+                <p class="alert alert-warning">{{stats['zerotier']['message']}}</p>
+            {% endif %}
+
+
+            <div class="d-flex justify-content-between align-items-center mb-3 status-item-entry">
+                <div class="item-text">
+                    <span>Status dos times</span>
+                </div>
+                <div class="item-status {{stats['teams']['class']}}">
+                    <span class="">{{stats['teams']['status']}}</span>
+                </div>
+            </div>
+            {% if stats['teams']['status'] == 'error' %}
+                <p class="alert alert-danger">{{stats['teams']['message']}}</p>
+            {% endif %}
+
+            {% if stats['teams']['status'] == 'warning' %}
+                <p class="alert alert-warning">{{stats['teams']['message']}}</p>
+            {% endif %}
+
+            <div class="d-flex justify-content-between align-items-center mb-3 status-item-entry">
+                <div class="item-text">
+                    <span>Status da competição</span>
+                </div>
+                <div class="item-status {{stats['competition']['class']}}">
+                    <span class="">{{stats['competition']['status']}}</span>
+                </div>
+            </div>
+            {% if stats['competition']['status'] == 'error' %}
+                <p class="alert alert-danger">{{stats['competition']['message']}}</p>
+            {% endif %}
+            
+            <a class="btn btn-success" href="{{url_for('hikariplugin.init_competition')}}">Iniciar Competição</a>
+            <a class="btn btn-success" href="{{url_for('hikariplugin.reset_competition')}}">Resetar Competição</a>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+  {{ Assets.js("assets/js/page.js") }}
+{% endblock %}

@@ -1,0 +1,54 @@
+
+#status-section {
+    background-color: none;
+    grid-column-start: 2;
+    grid-column-end: 3;
+}
+
+#rapid-menu {
+    grid-column-start: 0;
+    grid-column-end: 1;
+}
+
+#main-content {
+    display: grid;
+}
+
+
+.status-item-entry {
+    border: 1px solid rgba(0,0,0,0.4);
+    border-radius: 5px;
+    display: grid;
+    grid-template-columns: 0.5fr 0.5fr;
+}
+
+.item-status {
+    background-color: green;
+    padding: 10px;
+    color: white;
+}
+
+.item-text > span{
+    margin:5px;
+}
+
+body {
+    background-color: none;
+}
+
+.hikari-success {
+    background-color:   #0d8305;
+    color:white;
+}
+
+.hikari-warning {
+    background-color:   #ff7c00;
+    color:white;
+}
+
+
+
+.hikari-error {
+    background-color:  #e60000;
+    color: white;
+}

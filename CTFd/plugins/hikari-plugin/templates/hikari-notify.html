@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="/plugins/hikari-plugin/assets/notify.css">
+<div class="jumbotron">
+    <div class="container">
+      <h1>
+        {% trans %}Gerenciamento de competição HIKARI - Página de envio de notificações aos times{% endtrans %}
+      </h1>
+    </div>
+</div>
+<div class="container">
+
+    <div class="row">
+        <div class="">
+
+            <form action="{{ url_for('hikariplugin.hikari_notify') }}" method="POST">
+                <div class="mb-3">
+                    <b>{{ form.message.label(class="form-label") }}</b>
+                    <div class="">
+                        {{ form.message(class="form-control", style="width:800px", rows="10") }}
+                    </div>
+                </div>
+
+
+                <div class="mb-3">
+                    <b>{{ form.team_selection.label(class="form-label") }}</b>
+                    <div class="">
+                        {{ form.team_selection(class="form-control") }}
+                    </div>
+                </div>
+      
+                {{ form.nonce() }}
+
+                  <div class="row pt-3">
+                    <div class="">
+                      {{ form.submit(class="btn btn-block btn-primary w-150") }}
+                      <a class="btn btn-block btn-secondary w-150" href="{{ url_for('hikariplugin.hikari_main') }}">Voltar</a>
+                    </div>
+                  </div>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+  {{ Assets.js("assets/js/page.js") }}
+{% endblock %}
