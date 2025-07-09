@@ -39,6 +39,8 @@ click==7.1.2
     # via flask
 cmarkgfm==2022.10.27
     # via -r requirements.in
+confluent-kafka==2.1.1
+    # via -r requirements.in
 cryptography==40.0.2
     # via pymysql
 dataset==1.6.2
@@ -53,6 +55,7 @@ flask==2.0.3
     #   flask-restx
     #   flask-script
     #   flask-sqlalchemy
+    #   flask-wtf
 flask-babel==2.0.0
     # via -r requirements.in
 flask-caching==2.0.2
@@ -69,6 +72,8 @@ flask-sqlalchemy==2.5.1
     # via
     #   -r requirements.in
     #   flask-migrate
+flask-wtf==1.2.2
+    # via -r requirements.in
 freezegun==1.2.2
     # via -r requirements.in
 gevent==23.9.1
@@ -77,12 +82,14 @@ greenlet==3.0.3
     # via
     #   gevent
     #   sqlalchemy
-gunicorn==20.1.0
+gunicorn==23.0.0
     # via -r requirements.in
 idna==2.10
     # via requests
 itsdangerous==2.1.2
-    # via flask
+    # via
+    #   flask
+    #   flask-wtf
 jinja2==3.1.2
     # via
     #   flask
@@ -111,6 +118,8 @@ maxminddb==1.5.4
     # via
     #   -r requirements.in
     #   python-geoacumen-city
+packaging==25.0
+    # via gunicorn
 passlib==1.7.4
     # via -r requirements.in
 pillow==10.1.0
@@ -122,7 +131,9 @@ pycparser==2.20
 pydantic==1.6.2
     # via -r requirements.in
 pymysql[rsa]==1.0.2
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   pymysql
 pyrsistent==0.17.3
     # via jsonschema
 python-dateutil==2.8.1
@@ -174,13 +185,13 @@ werkzeug==2.0.3
     #   flask
     #   flask-restx
 wtforms==2.3.1
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   flask-wtf
 zope-event==4.5.0
     # via gevent
 zope-interface==5.2.0
     # via gevent
 
-confluent-kafka==2.1.1
-Flask-WTF
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
