@@ -26,7 +26,7 @@ botocore==1.34.39
     #   s3transfer
 cachelib==0.9.0
     # via flask-caching
-certifi==2022.12.7
+certifi==2024.7.4
     # via requests
 cffi==1.15.0
     # via
@@ -38,6 +38,8 @@ charset-normalizer==2.0.12
 click==7.1.2
     # via flask
 cmarkgfm==2022.10.27
+    # via -r requirements.in
+confluent-kafka==2.1.1
     # via -r requirements.in
 cryptography==40.0.2
     # via pymysql
@@ -53,6 +55,7 @@ flask==2.0.3
     #   flask-restx
     #   flask-script
     #   flask-sqlalchemy
+    #   flask-wtf
 flask-babel==2.0.0
     # via -r requirements.in
 flask-caching==2.0.2
@@ -69,6 +72,8 @@ flask-sqlalchemy==2.5.1
     # via
     #   -r requirements.in
     #   flask-migrate
+flask-wtf==1.2.2
+    # via -r requirements.in
 freezegun==1.2.2
     # via -r requirements.in
 gevent==23.9.1
@@ -82,7 +87,9 @@ gunicorn==20.1.0
 idna==2.10
     # via requests
 itsdangerous==2.1.2
-    # via flask
+    # via
+    #   flask
+    #   flask-wtf
 jinja2==3.1.2
     # via
     #   flask
@@ -122,7 +129,9 @@ pycparser==2.20
 pydantic==1.6.2
     # via -r requirements.in
 pymysql[rsa]==1.0.2
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   pymysql
 pyrsistent==0.17.3
     # via jsonschema
 python-dateutil==2.8.1
@@ -174,13 +183,13 @@ werkzeug==2.0.3
     #   flask
     #   flask-restx
 wtforms==2.3.1
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   flask-wtf
 zope-event==4.5.0
     # via gevent
 zope-interface==5.2.0
     # via gevent
 
-confluent-kafka==2.1.1
-Flask-WTF
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
